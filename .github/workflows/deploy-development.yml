@@ -31,8 +31,5 @@ jobs:
       - name: Push Docker Image to Image Hub
         run: heroku container:push web -a heroku-deploy
 
-      # - name: Set app Stack to container
-      #   run: heroku stack:set container -a heroku-deploy
-
       - name: Release Docker Image to Heroku
         run: heroku container:release web -a heroku-deploy

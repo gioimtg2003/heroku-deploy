@@ -1,6 +1,7 @@
 # syntax = docker/dockerfile:1
 ARG NODE_VERSION=20
 FROM node:${NODE_VERSION}-alpine3.18 AS base
+LABEL fly_launch_runtime="NestJS"
 RUN apk add --no-cache curl
 WORKDIR /app
 
@@ -15,6 +16,9 @@ RUN pnpm install --frozen-lockfile --prod
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
+
+ARG SENTRY_AUTH_TOKEN
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
 # Install pnpm
 ARG PNPM_VERSION=latest
@@ -35,7 +39,6 @@ FROM base
 COPY --from=build /app/dist /app/dist
 COPY --link package.json pnpm-lock.yaml ./
 COPY --from=production-deps /app/node_modules /app/node_modules
-ARG NODE_ENV=development
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
