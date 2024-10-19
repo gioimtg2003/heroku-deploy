@@ -20,16 +20,13 @@ jobs:
       - name: Build Docker Image
         run: docker build -t registry.heroku.com/${{ secrets.APP_NAME }}/web .
 
-      - name: List Docker Image
-        run: docker images
-
       - name: Login to the Heroku Container Registry
         run: heroku container:login
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Push Docker Image to Image Hub
-        run: docker push registry.heroku.com/${{ secrets.APP_NAME }}/web
+        run: docker push registry.heroku.com/heroku-deploy/web
 
       - name: Release Docker Image to Heroku
-        run: heroku container:release web -a ${{ secrets.APP_NAME }}
+        run: heroku container:release web -a heroku-deploy
