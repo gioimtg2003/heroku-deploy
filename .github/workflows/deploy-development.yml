@@ -27,10 +27,9 @@ jobs:
 
       - name: Push Docker Image to Image Hub
         run: docker push registry.heroku.com/heroku-deploy/web
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Set app Stack to container
+        run: heroku stack:set container -a heroku-deploy
 
       - name: Release Docker Image to Heroku
         run: heroku container:release web -a heroku-deploy
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
