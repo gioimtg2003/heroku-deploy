@@ -25,9 +25,6 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
-      - name: Create container on Heroku
-        run: heroku create --stack container
-
       - name: Push Docker Image to Image Hub
         run: heroku container:push web -a heroku-deploy
 
